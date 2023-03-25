@@ -39,7 +39,7 @@ const Auth = () => {
 
   const handleSignUp = useCallback(async () => {
     try {
-      await fetch('/api/signUp', {
+      const res = await fetch('/api/signUp', {
         method: 'POST',
         body: JSON.stringify({
           name,
@@ -47,6 +47,7 @@ const Auth = () => {
           password,
         }),
       })
+      if (!res.ok) throw new Error('handleSignUp error')
 
       handleSignIn()
     } catch (error) {
