@@ -1,10 +1,14 @@
 'use client'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 import { useState, useCallback } from 'react'
 
 import Input from '@/components/Input'
 
 const Auth = () => {
+  const router = useRouter()
+
   const [variant, setVariant] = useState('signIn')
 
   const [email, setEmail] = useState('')
@@ -17,6 +21,38 @@ const Auth = () => {
     setName('')
     setPassword('')
   }, [])
+
+  const handleSignIn = useCallback(async () => {
+    try {
+      await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+        callbackUrl: '/',
+      })
+
+      router.push('/')
+    } catch (error) {
+      console.log('signIn error', error)
+    }
+  }, [email, password, router])
+
+  const handleSignUp = useCallback(async () => {
+    try {
+      await fetch('/api/signUp', {
+        method: 'POST',
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      })
+
+      handleSignIn()
+    } catch (error) {
+      console.log('signUp error', error)
+    }
+  }, [email, name, password, handleSignIn])
 
   return (
     <div className="relative h-full w-full bg-[url('/img/hero.jpg')] bg-cover bg-fixed bg-no-repeat">
@@ -55,7 +91,10 @@ const Auth = () => {
               />
             </div>
 
-            <button className="mt-10 w-full rounded-md bg-red-600 py-3 font-bold text-white transition hover:bg-red-700">
+            <button
+              className="mt-10 w-full rounded-md bg-red-600 py-3 font-bold text-white transition hover:bg-red-700"
+              onClick={variant === 'signIn' ? handleSignIn : handleSignUp}
+            >
               {variant === 'signIn' ? 'Sign In' : 'Sign up'}
             </button>
 
