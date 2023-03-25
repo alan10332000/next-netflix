@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(405).end()
     }
 
-    const { email, name, password } = req.body
+    const { email, name, password } = JSON.parse(req.body)
 
     const existingUser = await prismaDB.user.findUnique({
       where: {
