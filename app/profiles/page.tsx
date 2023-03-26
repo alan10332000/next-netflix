@@ -5,11 +5,11 @@ import UI from './UI'
 
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
 
-const Auth = async () => {
+const Profiles = async () => {
   const session = await getServerSession(authOptions)
-  if (session) redirect('/')
+  if (!session) redirect('/auth')
 
   return <UI />
 }
 
-export default Auth
+export default Profiles
