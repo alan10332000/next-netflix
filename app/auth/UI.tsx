@@ -108,13 +108,13 @@ const UI = () => {
             <div className="mt-8 flex flex-row items-center justify-center gap-4">
               <div
                 className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white transition hover:opacity-80"
-                onClick={() => signIn('google', { callbackUrl: '/' })}
+                onClick={() => signIn('google', { callbackUrl: '/profiles' })}
               >
                 <FcGoogle size={32} />
               </div>
               <div
                 className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white transition hover:opacity-80"
-                onClick={() => signIn('github', { callbackUrl: '/' })}
+                onClick={() => signIn('github', { callbackUrl: '/profiles' })}
               >
                 <FaGithub size={32} />
               </div>
