@@ -6,7 +6,7 @@ import { useState, useCallback } from 'react'
 import { FaGithub } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
 
-import Input from '@/components/Input'
+import Input from './Input'
 
 const Auth = () => {
   const router = useRouter()
