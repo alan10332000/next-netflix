@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import prismaDB from '@/lib/prismaDB'
+import prismaDB from '@/libs/prismaDB'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
