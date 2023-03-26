@@ -26,16 +26,20 @@ const UI = () => {
 
   const handleSignIn = useCallback(async () => {
     try {
-      await signIn('credentials', {
+      const res = await signIn('credentials', {
         email,
         password,
         redirect: false,
         callbackUrl: '/',
       })
+      console.log('handleSignIn res', res)
 
-      router.push('/')
+      const errorMessage = ['Email and password required', 'Email does not exist', 'Incorrect password']
+      if (res!.error && errorMessage.includes(res!.error)) throw new Error(res!.error)
+
+      router.push('/profiles')
     } catch (error) {
-      console.log('signIn error', error)
+      console.log('handleSignIn error', error)
     }
   }, [email, password, router])
 
@@ -53,7 +57,7 @@ const UI = () => {
 
       handleSignIn()
     } catch (error) {
-      console.log('signUp error', error)
+      console.log('handleSignUp error', error)
     }
   }, [email, name, password, handleSignIn])
 
