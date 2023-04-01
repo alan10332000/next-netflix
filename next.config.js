@@ -6,6 +6,9 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
+  images: {
+    domains: ['upload.wikimedia.org', 'uhdtv.io', 'mango.blender.org', 'download.blender.org'],
+  },
 }
 
 module.exports = nextConfig
