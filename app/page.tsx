@@ -1,8 +1,8 @@
 import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth/next'
 
-import ButtonLogout from './ButtonLogout'
-import User from './User'
+import ButtonLogout from './components/ButtonLogout'
+import User from './components/User'
 
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
 
