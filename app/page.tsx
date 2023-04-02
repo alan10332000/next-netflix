@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next'
 
 import Billboard from './components/Billboard'
 import Navbar from './components/Navbar'
+import ShowInfoModal from './ShowInfoModal'
 import ShowMovieList from './ShowMovieList'
 
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
@@ -14,6 +15,7 @@ const Home = async () => {
   return (
     <>
       <Navbar />
+      <ShowInfoModal />
       <Billboard />
       <div className="pb-40">
         <ShowMovieList />

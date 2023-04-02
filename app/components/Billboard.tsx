@@ -1,12 +1,19 @@
 'use client'
 import { InformationCircleIcon } from '@heroicons/react/24/outline'
+import { useCallback } from 'react'
 
 import PlayButton from './PlayButton'
 
 import useBillboard from '@/hooks/useBillboard'
+import useInfoModalStore from '@/hooks/useInfoModalStore'
 
 const Billboard: React.FC = () => {
+  const { openModal } = useInfoModalStore()
   const { data } = useBillboard()
+
+  const handleOpenModal = useCallback(() => {
+    openModal(data?.id)
+  }, [openModal, data?.id])
 
   return (
     <div className="relative h-[56.25vw]">
@@ -27,7 +34,10 @@ const Billboard: React.FC = () => {
         </p>
         <div className="mt-3 flex flex-row items-center gap-3 md:mt-4">
           <PlayButton movieId={data?.id} />
-          <button className="flex w-auto flex-row items-center rounded-md bg-white/30 py-1 px-2 text-xs font-semibold text-white transition hover:bg-white/20 md:py-2 md:px-4 lg:text-lg">
+          <button
+            className="flex w-auto flex-row items-center rounded-md bg-white/30 py-1 px-2 text-xs font-semibold text-white transition hover:bg-white/20 md:py-2 md:px-4 lg:text-lg"
+            onClick={handleOpenModal}
+          >
             <InformationCircleIcon className="mr-1 w-4 md:w-7" />
             More Info
           </button>
