@@ -4,6 +4,8 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useCallback } from 'react'
 
+import FavoriteButton from './FavoriteButton'
+
 import { MovieInterface } from '@/types'
 
 interface MovieCardProps {
@@ -42,6 +44,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
             >
               <PlayIcon className="w-4 text-black lg:w-6" />
             </div>
+            <FavoriteButton movieId={data.id} />
             <div className="group/item ml-auto flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border-2 border-white transition hover:border-neutral-300 lg:h-10 lg:w-10">
               <ChevronDownIcon className="w-4 text-white group-hover/item:text-neutral-300 lg:w-6" />
             </div>
