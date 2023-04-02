@@ -6,6 +6,7 @@ import { useCallback } from 'react'
 
 import FavoriteButton from './FavoriteButton'
 
+import useInfoModalStore from '@/hooks/useInfoModalStore'
 import { MovieInterface } from '@/types'
 
 interface MovieCardProps {
@@ -14,6 +15,7 @@ interface MovieCardProps {
 
 const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
   const router = useRouter()
+  const { openModal } = useInfoModalStore()
 
   const redirectToWatch = useCallback(() => router.push(`/watch/${data.id}`), [router, data.id])
 
@@ -45,7 +47,10 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
               <PlayIcon className="w-4 text-black lg:w-6" />
             </div>
             <FavoriteButton movieId={data.id} />
-            <div className="group/item ml-auto flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border-2 border-white transition hover:border-neutral-300 lg:h-10 lg:w-10">
+            <div
+              onClick={() => openModal(data?.id)}
+              className="group/item ml-auto flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border-2 border-white transition hover:border-neutral-300 lg:h-10 lg:w-10"
+            >
               <ChevronDownIcon className="w-4 text-white group-hover/item:text-neutral-300 lg:w-6" />
             </div>
           </div>
