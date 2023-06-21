@@ -1,22 +1,44 @@
+import clsx from 'clsx'
+import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
+
 interface InputProps {
   id: string
   type?: string
-  value: string
   label: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  autoComplete?: string
+  pattern?: RegExp
+  required?: boolean
+  register: UseFormRegister<FieldValues>
+  errors: FieldErrors
+  disabled?: boolean
 }
 
-const Input: React.FC<InputProps> = ({ id, type, value, label, onChange }) => {
+const Input: React.FC<InputProps> = ({
+  id,
+  type = 'text',
+  label,
+  autoComplete,
+  pattern,
+  required,
+  register,
+  errors,
+  disabled,
+}) => {
+  console.log('errors[id]', errors[id])
+
   return (
     <div className="relative">
       <input
-        // eslint-disable-next-line tailwindcss/no-custom-classname
-        className="invalid:border-b-1 peer block w-full appearance-none rounded-md bg-neutral-700 px-6 pt-6 pb-1 text-base text-white focus:outline-none focus:ring-0"
         id={id}
         type={type}
-        placeholder=" "
-        value={value}
-        onChange={onChange}
+        autoComplete={autoComplete}
+        disabled={disabled}
+        {...register(id, { required, pattern })}
+        className={clsx(
+          `peer block w-full appearance-none rounded-md bg-neutral-700 px-6 pt-6 pb-1 text-base text-white focus:outline-none focus:ring-0`,
+          errors[id] && 'focus:ring-rose-500',
+          disabled && 'cursor-default opacity-50'
+        )}
       />
       <label
         htmlFor={id}

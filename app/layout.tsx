@@ -1,4 +1,7 @@
 import { Roboto } from 'next/font/google'
+
+import ToasterContext from './context/ToasterContext'
+
 import './globals.css'
 
 export const metadata = {
@@ -16,7 +19,10 @@ const roboto = Roboto({
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable} font-sans`}>{children}</body>
+      <body className={`${roboto.variable} font-sans`}>
+        <ToasterContext />
+        {children}
+      </body>
     </html>
   )
 }
