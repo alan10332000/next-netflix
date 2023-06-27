@@ -1,13 +1,13 @@
 import { without } from 'lodash'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import getCurrentUser from '@/libs/getCurrentUser'
 import prismaDB from '@/libs/prismaDB'
-import serverAuth from '@/libs/serverAuth'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method === 'POST') {
-      const { currentUser } = await serverAuth(req)
+      const currentUser = await getCurrentUser()
 
       const { movieId } = req.body
 
@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const user = await prismaDB.user.update({
         where: {
-          email: currentUser.email || '',
+          email: currentUser!.email || '',
         },
         data: {
           favoriteIds: {
@@ -36,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     if (req.method === 'DELETE') {
-      const { currentUser } = await serverAuth(req)
+      const currentUser = await getCurrentUser()
 
       const { movieId } = req.body
 
@@ -50,11 +50,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         throw new Error('Invalid ID')
       }
 
-      const updatedFavoriteIds = without(currentUser.favoriteIds, movieId)
+      const updatedFavoriteIds = without(currentUser!.favoriteIds, movieId)
 
       const updatedUser = await prismaDB.user.update({
         where: {
-          email: currentUser.email || '',
+          email: currentUser!.email || '',
         },
         data: {
           favoriteIds: updatedFavoriteIds,
