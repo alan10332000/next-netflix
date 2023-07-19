@@ -1,34 +1,28 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { compare } from 'bcrypt'
+import bcrypt from 'bcrypt'
 import NextAuth, { AuthOptions } from 'next-auth'
-import Credentials from 'next-auth/providers/credentials'
+import CredentialsProvider from 'next-auth/providers/credentials'
 import GithubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 
 import prismaDB from '@/libs/prismaDB'
 
 export const authOptions: AuthOptions = {
+  adapter: PrismaAdapter(prismaDB),
   providers: [
     GithubProvider({
-      clientId: process.env.GITHUB_ID || '',
-      clientSecret: process.env.GITHUB_SECRET || '',
+      clientId: process.env.GITHUB_ID as string,
+      clientSecret: process.env.GITHUB_SECRET as string,
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID || '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
-    Credentials({
-      id: 'credentials',
-      name: 'Credentials',
+    CredentialsProvider({
+      name: 'credentials',
       credentials: {
-        email: {
-          label: 'Email',
-          type: 'text',
-        },
-        password: {
-          label: 'Password',
-          type: 'password',
-        },
+        email: { label: 'Email', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
@@ -41,14 +35,14 @@ export const authOptions: AuthOptions = {
           },
         })
 
-        if (!user || !user.hashedPassword) {
+        if (!user || !user?.hashedPassword) {
           throw new Error('Email does not exist')
         }
 
-        const isCorrectPassword = await compare(credentials.password, user.hashedPassword)
+        const isCorrectPassword = await bcrypt.compare(credentials.password, user.hashedPassword)
 
         if (!isCorrectPassword) {
-          throw new Error('Incorrect password')
+          throw new Error('Invalid credentials')
         }
 
         return user
@@ -59,7 +53,6 @@ export const authOptions: AuthOptions = {
     signIn: '/auth',
   },
   debug: process.env.NODE_ENV === 'development',
-  adapter: PrismaAdapter(prismaDB),
   session: { strategy: 'jwt' },
   jwt: {
     secret: process.env.NEXTAUTH_JWT_SECRET,
