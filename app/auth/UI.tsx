@@ -38,22 +38,26 @@ const UI = () => {
       setIsLoading(true)
 
       try {
-        if (variant === 'signUp')
-          await fetch('/api/signUp', {
+        if (variant === 'signUp') {
+          const signUpCallback = await fetch('/api/signUp', {
             method: 'POST',
             body: JSON.stringify({ ...data }),
           })
+          const status = signUpCallback.status
+          const res = await signUpCallback.json()
+          if (status === 422) return toast.error(res.error)
+        }
 
-        const callback = await signIn('credentials', {
+        const signInCallback = await signIn('credentials', {
           ...data,
           redirect: false,
           callbackUrl: '/',
         })
-        console.log('onSubmit callback', callback)
+        console.log('onSubmit signInCallback', signInCallback)
 
-        if (callback?.error) return toast.error('Invalid credentials!')
+        if (signInCallback?.error) return toast.error('Invalid credentials!')
 
-        if (callback?.ok) {
+        if (signInCallback?.ok) {
           toast.success('Logged in!')
           router.push('/profiles')
         }
