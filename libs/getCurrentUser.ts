@@ -1,15 +1,16 @@
+import { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth/next'
 
 import prismaDB from '@/libs/prismaDB'
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
 
-export async function getSession() {
-  return await getServerSession(authOptions)
+export async function getSession(req: NextApiRequest, res: NextApiResponse) {
+  return await getServerSession(req, res, authOptions)
 }
 
-export default async function getCurrentUser() {
+export default async function getCurrentUser(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const session = await getSession()
+    const session = await getSession(req, res)
 
     if (!session?.user?.email) return null
 

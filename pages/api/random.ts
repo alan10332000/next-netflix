@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(405).end()
     }
 
-    await getCurrentUser()
+    await getCurrentUser(req, res)
 
     const moviesCount = await prismaDB.movie.count()
     const randomIndex = Math.floor(Math.random() * moviesCount)
