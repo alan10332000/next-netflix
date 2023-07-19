@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(405).end()
     }
 
-    const currentUser = await getCurrentUser()
+    const currentUser = await getCurrentUser(req, res)
 
     const favoritesMovies = await prismaDB.movie.findMany({
       where: {

@@ -7,7 +7,7 @@ import prismaDB from '@/libs/prismaDB'
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method === 'POST') {
-      const currentUser = await getCurrentUser()
+      const currentUser = await getCurrentUser(req, res)
 
       const { movieId } = req.body
 
@@ -36,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     if (req.method === 'DELETE') {
-      const currentUser = await getCurrentUser()
+      const currentUser = await getCurrentUser(req, res)
 
       const { movieId } = req.body
 
